@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 public static class VaultApp
 {
-	private static readonly string SecretPhrase = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String("a3VyZGlza2Fyw6R2ZW4="));
+	private static string SecretPhrase = string.Empty;
 
 	public static void Main()
 	{
@@ -21,6 +21,12 @@ public static class VaultApp
 		string passwordFile = enc.GetValue<string>("PasswordFile") ?? "password.b64";
 		string cipherFile = enc.GetValue<string>("CipherTextFile") ?? "secret.bin";
 		string dataRoot = enc.GetValue<string>("DataRoot") ?? "data";
+		string secretPhraseB64 = enc.GetValue<string>("SecretPhraseB64") ?? string.Empty;
+		if (!string.IsNullOrEmpty(secretPhraseB64))
+		{
+			try { SecretPhrase = Encoding.UTF8.GetString(Convert.FromBase64String(secretPhraseB64)); }
+			catch { SecretPhrase = string.Empty; }
+		}
 
 		string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
 		string dataRootPath = Path.Combine(projectRoot, dataRoot);
