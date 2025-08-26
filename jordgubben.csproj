@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="strawberry-secret-exercise/**/*.cs" />
-    <None Remove="strawberry-secret-exercise/**/*.csproj" />
+    <Compile Remove="jordgubben.csproj/**/*.cs" />
+    <None Remove="jordgubben.csproj/**/*.csproj" />
   </ItemGroup>
 
 </Project>
