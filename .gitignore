@@ -54,3 +54,7 @@ password.b64
 *.swp
 *.tmp
 *.bak
+
+# Data directory (encrypted artifacts) - ignore everything inside
+data/**
+!data/.gitkeep
