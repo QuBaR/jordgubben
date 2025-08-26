@@ -1,0 +1,56 @@
+## Build artifacts
+[Bb]in/
+[Oo]bj/
+
+## User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio
+.vs/
+
+## Rider
+.idea/
+*.sln.iml
+
+## Dotnet tooling
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+*.nupkg
+# Packages folder can be ignored because of restore
+**/packages/*
+!**/packages/build/
+
+## Logs
+*.log
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+## Coverage
+coverage*
+*.coverage
+*.coveragexml
+
+## Publish
+**/publish/
+
+## Secrets (example - adjust carefully)
+secret.bin
+password.b64
+
+## Others
+*.swp
+*.tmp
+*.bak
