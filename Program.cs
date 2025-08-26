@@ -14,6 +14,10 @@ var saltSize = encSection.GetValue<int>("SaltSizeBytes");
 var nonceSize = encSection.GetValue<int>("NonceSizeBytes");
 var passwordFile = encSection.GetValue<string>("PasswordFile") ?? "password.b64";
 var ciphertextFile = encSection.GetValue<string>("CipherTextFile") ?? "secret.bin";
+var dataRoot = encSection.GetValue<string>("DataRoot") ?? "data";
+var timestampFolder = DateTime.UtcNow.ToString("yyyyMMdd_HHmmssfff");
+var outputDir = Path.Combine(AppContext.BaseDirectory, dataRoot, timestampFolder);
+Directory.CreateDirectory(outputDir);
 
 Console.WriteLine("=== Strawberry Secret Encryptor ===");
 Console.Write("Enter message to encrypt: ");
@@ -49,7 +53,8 @@ if (salt.Length > 255 || nonce.Length > 255 || tag.Length > 255)
 	Console.WriteLine("Component too large.");
 	return;
 }
-using (var fs = File.Create(Path.Combine(AppContext.BaseDirectory, ciphertextFile)))
+var cipherPath = Path.Combine(outputDir, ciphertextFile);
+using (var fs = File.Create(cipherPath))
 {
 	Span<byte> header = stackalloc byte[4 + 1 + 3 + 4];
 	BinaryPrimitives.WriteUInt32BigEndian(header[..4], magic);
@@ -67,9 +72,10 @@ using (var fs = File.Create(Path.Combine(AppContext.BaseDirectory, ciphertextFil
 
 // Store password base64 (Note: storing raw password is insecure in real scenarios!)
 var b64Pwd = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password));
-await File.WriteAllTextAsync(Path.Combine(AppContext.BaseDirectory, passwordFile), b64Pwd + Environment.NewLine);
+var passwordPath = Path.Combine(outputDir, passwordFile);
+await File.WriteAllTextAsync(passwordPath, b64Pwd + Environment.NewLine);
 
-Console.WriteLine($"Encrypted and saved to '{ciphertextFile}'. Password (base64) saved to '{passwordFile}'.");
+Console.WriteLine($"Encrypted and saved to '{cipherPath}'. Password (base64) saved to '{passwordPath}'.");
 Console.WriteLine("NOTE: Storing the password is insecure. For demonstration only.");
 
 static string ReadPassword(string prompt)
